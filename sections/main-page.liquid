@@ -1,0 +1,100 @@
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
+  }
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% if page.metafields.custom.banner_slider != blank %}
+{{ 'flickity.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'jquery-3.6.0.min.js' | asset_url }}" async></script>
+<script src="{{ 'flickity.pkgd.js' | asset_url }}" async></script>
+{% endif %}
+
+<div class="main--banner">
+  <div class="main-banner-image">
+    {% comment %}SLIDER BANNER IMAGE{% endcomment %}
+    {% if page.metafields.custom.banner_slider != blank %}
+    <div class="main-banner-slider carousel" data-flickity='{ "pageDots": false, "lazyLoad": true }'>
+      {% for page in page.metafields.custom.banner_slider.value %}
+        {%- if page != blank -%}
+          <img src="{{ page | image_url }}" width="1920" height="500" loading="lazy" alt="{{ page.title | escape }}" />
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% else %}
+
+    {% comment %}SINGLE BANNER IMAGE{% endcomment %}
+    {% if page.metafields.custom.banner_image.value != blank %}
+    <img src="{{ page.metafields.custom.banner_image.value | image_url }}" width="1920" height="500" loading="lazy" alt="{{ page.title | escape }}" />
+    {% else %}
+    {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+      
+    {% endif %}
+
+    <div class="banner__caption">
+      <h1 class="title h1{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      {% if page.metafields.custom.banner_heading != blank %}
+        {{ page.metafields.custom.banner_heading }}
+      {% else %}
+        {{ page.title | escape }}
+      {% endif %}
+      </h1>
+      {% if page.metafields.custom.banner_caption != blank %}
+      <p>{{ page.metafields.custom.banner_caption }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% if page.metafields.custom.hide_content != true %}
+{% if page.content.size > 0 %}
+<div class="main-page-wrapper page__{{ page.handle }}"> 
+  <div class="page-width section-{{ section.id }}-padding">
+     <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      {{ page.content }}
+    </div>  
+  </div>
+</div>
+{% endif %}
+{% endif %}
+{% schema %}
+{
+  "name": "t:sections.main-page.name",
+  "tag": "section",
+  "class": "section main-banner-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

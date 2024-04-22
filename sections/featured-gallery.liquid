@@ -1,0 +1,298 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top:40px;
+    padding-bottom: 40px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+{%- liquid
+  assign highest_ratio = 0
+  for block in section.blocks
+    if block.settings.image.aspect_ratio > highest_ratio
+      assign highest_ratio = block.settings.image.aspect_ratio
+    endif
+  endfor
+-%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+    <div class="page-width">
+      <div class="title-wrapper">
+        {%- if section.settings.title != blank -%}
+          <h2 class="title {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+        <div class="rte">
+          {{ section.settings.content }}
+        </div>  
+      </div>
+      
+      {% if section.blocks.size > 0 %}
+      <ul class="grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down{% if section.settings.swipe_on_mobile %} slider slider--tablet grid--peek{% endif %} collection-list--{{ section.blocks.size }}-items">
+      
+      {%- for block in section.blocks -%}
+        <li class="grid__item">
+          <div class="gallery__item">            
+            <div class="gallery__image"> 
+              {%- if block.settings.image != blank -%}
+              {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+              {%- capture sizes -%}
+                (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+              {%- endcapture -%}            
+              {{
+                block.settings.image
+                | image_url: width: 350
+                | image_tag: loading: 'lazy', sizes: sizes, widths: widths
+              }}
+            {% else %}
+            {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>      
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <div class="buttons">
+        {% if section.settings.button_label_1 != blank %}
+        <a href="{{ section.settings.button_link_1 }}" class="button button--primary">{{ section.settings.button_label_1 }}</a>
+        {% endif %}
+        {% if section.settings.button_label_2 != blank %}
+        <a href="{{ section.settings.button_link_2 }}" class="button button--primary">{{ section.settings.button_label_2 }}</a>
+        {% endif %}
+        {% if section.settings.button_label_3 != blank %}
+        <a href="{{ section.settings.button_link_3 }}" class="button button--primary">{{ section.settings.button_label_3 }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Gallery",
+  "tag": "section",
+  "class": "section featured-gallery",
+  "max_blocks": 12,
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Collections",
+      "label": "t:sections.collection-list.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "default": "<p>Share information about your brand with your customers.</p>",
+      "label": "t:sections.rich-text.blocks.text.settings.text.label"
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "options": [
+        {
+          "value": "third",
+          "label": "t:sections.multicolumn.settings.image_width.options__1.label"
+        },
+        {
+          "value": "half",
+          "label": "t:sections.multicolumn.settings.image_width.options__2.label"
+        },
+        {
+          "value": "full",
+          "label": "t:sections.multicolumn.settings.image_width.options__3.label"
+        }
+      ],
+      "default": "full",
+      "label": "t:sections.multicolumn.settings.image_width.label"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.collection-list.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.collection-list.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.collection-list.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "square",
+      "label": "t:sections.collection-list.settings.image_ratio.label",
+      "info": "t:sections.collection-list.settings.image_ratio.info"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.collection-list.settings.columns_desktop.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "background-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.collection-list.settings.header_mobile.content"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.collection-list.settings.columns_mobile.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.collection-list.settings.columns_mobile.options__2.label"
+        }
+      ],
+      "default": "1",
+      "label": "t:sections.collection-list.settings.columns_mobile.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": false,
+      "label": "t:sections.collection-list.settings.swipe_on_mobile.label"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_label_1",
+      "label": "Button label 1"
+    },
+    {
+      "type": "url",
+      "id": "button_link_1",
+      "label": "Button Link 1"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Button label 2"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Button Link 2"
+    },
+    {
+      "type": "text",
+      "id": "button_label_3",
+      "label": "Button label 3"
+    },
+    {
+      "type": "url",
+      "id": "button_link_3",
+      "label": "Button Link 3"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.multicolumn.blocks.column.settings.image.label",
+          "info": "Image Size 450 X 450px"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Gallery",
+      "blocks": [
+        {
+          "type": "gallery"
+        },
+        {
+          "type": "gallery"
+        },
+        {
+          "type": "gallery"
+        },
+        {
+          "type": "gallery"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

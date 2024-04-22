@@ -1,0 +1,407 @@
+{{ 'flickity.min.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top:40px;
+    padding-bottom: 40px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+{%- liquid
+  assign highest_ratio = 0
+  for block in section.blocks
+    if block.settings.image.aspect_ratio > highest_ratio
+      assign highest_ratio = block.settings.image.aspect_ratio
+    endif
+  endfor
+-%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+    <div class="page-width">
+      {%- if section.settings.title != blank or section.settings.content != blank -%}
+      <div class="title-wrapper">
+        {%- if section.settings.title != blank -%}
+          <h2 class="title {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+        {% if section.settings.content != blank %}
+        <div class="rte">
+          {{ section.settings.content }}
+        </div>
+        {%- endif -%}
+      </div>
+      {%- endif -%}
+
+      {% if section.blocks.size > 0 %}
+      <div class="section_tabs tab__{{ section.id }}">
+        <div class="tab_buttons" role="tablist" aria-label="">
+          {%- for block in section.blocks -%}
+            {% if block.settings.title != blank %}
+            <button class="tab-link" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" id="tab_{{ block.id }}">{{ block.settings.title }}</button>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <div class="tab-content">
+        {%- for block in section.blocks -%}
+        <div class="tab_panel" role="tabpanel" aria-labelledby="tab_{{ block.id }}" {% if forloop.first %}{% else %}hidden{% endif %}>
+          <div class="carousel" data-flickity='{ "pageDots": false, "lazyLoad": true, "groupCells": 2, "cellAlign": "left" }'>
+
+            {%- if block.settings.slide_1_image != blank -%}
+            {% render 'tab-slider-cell', slider_image: block.settings.slide_1_image, slider_text: block.settings.slide_1_title %}
+            {% endif %}
+
+            {%- if block.settings.slide_2_image != blank -%}
+            {% render 'tab-slider-cell', slider_image: block.settings.slide_2_image, slider_text: block.settings.slide_2_title %}
+            {% endif %}
+
+            {%- if block.settings.slide_3_image != blank -%}
+            {% render 'tab-slider-cell', slider_image: block.settings.slide_3_image, slider_text: block.settings.slide_3_title %}
+            {% endif %}
+
+            {%- if block.settings.slide_4_image != blank -%}
+            {% render 'tab-slider-cell', slider_image: block.settings.slide_4_image, slider_text: block.settings.slide_4_title %}
+            {% endif %}
+
+            {%- if block.settings.slide_5_image != blank -%}
+            {% render 'tab-slider-cell', slider_image: block.settings.slide_5_image, slider_text: block.settings.slide_5_title %}
+            {% endif %}
+
+            {%- if block.settings.slide_6_image != blank -%}
+            {% render 'tab-slider-cell', slider_image: block.settings.slide_6_image, slider_text: block.settings.slide_6_title %}
+            {% endif %}
+
+            {%- if block.settings.slide_7_image != blank -%}
+            {% render 'tab-slider-cell', slider_image: block.settings.slide_7_image, slider_text: block.settings.slide_7_title %}
+            {% endif %}
+
+            {%- if block.settings.slide_8_image != blank -%}
+            {% render 'tab-slider-cell', slider_image: block.settings.slide_8_image, slider_text: block.settings.slide_8_title %}
+            {% endif %}
+          
+          </div>          
+        </div>
+        {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+<script src="{{ 'jquery-3.6.0.min.js' | asset_url }}"></script>
+<script src="{{ 'flickity.pkgd.js' | asset_url }}"></script>
+<script>
+const tab_slider = document.querySelector('.tab__{{ section.id }}');
+const tab_slider_Buttons = tab_slider.querySelectorAll('[role="tab"]');
+const tab_slider_Panels = Array.from(tab_slider.querySelectorAll('[role="tabpanel"]'));
+  
+function tabClickHandler(e) {
+  //Hide All Tabpane
+  tab_slider_Panels.forEach(panel => {
+      panel.hidden = 'true';
+  });              	
+  //Deselect Tab Button
+  tab_slider_Buttons.forEach( button => {
+      button.setAttribute('aria-selected', 'false');
+  });              	
+  //Mark New Tab
+  e.currentTarget.setAttribute('aria-selected', 'true');              	
+  //Show New Tab
+  const { id } = e.currentTarget;              	
+  const currentTab = tab_slider_Panels.find(
+      panel => panel.getAttribute('aria-labelledby') === id
+  );              	
+  currentTab.hidden = false;
+  $(".carousel").flickity('resize');
+  
+}              
+tab_slider_Buttons.forEach(button => {
+  button.addEventListener('click', tabClickHandler);
+});
+</script>
+
+
+{% schema %}
+{
+  "name": "Tab + Slider Before/After",
+  "tag": "section",
+  "class": "section featured-slider-bf tab--slider",
+  "max_blocks": 5,
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Collections",
+      "label": "t:sections.collection-list.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "default": "<p>Share information about your brand with your customers.</p>",
+      "label": "t:sections.rich-text.blocks.text.settings.text.label"
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "options": [
+        {
+          "value": "third",
+          "label": "t:sections.multicolumn.settings.image_width.options__1.label"
+        },
+        {
+          "value": "half",
+          "label": "t:sections.multicolumn.settings.image_width.options__2.label"
+        },
+        {
+          "value": "full",
+          "label": "t:sections.multicolumn.settings.image_width.options__3.label"
+        }
+      ],
+      "default": "full",
+      "label": "t:sections.multicolumn.settings.image_width.label"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.collection-list.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.collection-list.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.collection-list.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "square",
+      "label": "t:sections.collection-list.settings.image_ratio.label",
+      "info": "t:sections.collection-list.settings.image_ratio.info"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "background-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab_slider_ba",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Before/After",
+          "label": "Tab Name"
+        },
+        {
+          "type": "header",
+          "content": "Slide 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_1_image",
+          "label": "t:sections.multicolumn.blocks.column.settings.image.label",
+          "info": "Image Size 510 X 510px"
+        },
+        {
+          "type": "text",
+          "id": "slide_1_title",
+          "default": "Before",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Slide 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_2_image",
+          "label": "t:sections.multicolumn.blocks.column.settings.image.label",
+          "info": "Image Size 510 X 510px"
+        },
+        {
+          "type": "text",
+          "id": "slide_2_title",
+          "default": "After",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Slide 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_3_image",
+          "label": "t:sections.multicolumn.blocks.column.settings.image.label",
+          "info": "Image Size 510 X 510px"
+        },
+        {
+          "type": "text",
+          "id": "slide_3_title",
+          "default": "Before",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Slide 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_4_image",
+          "label": "t:sections.multicolumn.blocks.column.settings.image.label",
+          "info": "Image Size 510 X 510px"
+        },
+        {
+          "type": "text",
+          "id": "slide_4_title",
+          "default": "After",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Slide 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_5_image",
+          "label": "t:sections.multicolumn.blocks.column.settings.image.label",
+          "info": "Image Size 510 X 510px"
+        },
+        {
+          "type": "text",
+          "id": "slide_5_title",
+          "default": "Before",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Slide 6"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_6_image",
+          "label": "t:sections.multicolumn.blocks.column.settings.image.label",
+          "info": "Image Size 510 X 510px"
+        },
+        {
+          "type": "text",
+          "id": "slide_6_title",
+          "default": "After",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Slide 7"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_7_image",
+          "label": "t:sections.multicolumn.blocks.column.settings.image.label",
+          "info": "Image Size 510 X 510px"
+        },
+        {
+          "type": "text",
+          "id": "slide_7_title",
+          "default": "Before",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Slide 8"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_8_image",
+          "label": "t:sections.multicolumn.blocks.column.settings.image.label",
+          "info": "Image Size 510 X 510px"
+        },
+        {
+          "type": "text",
+          "id": "slide_8_title",
+          "default": "After",
+          "label": "Text"
+        }
+        
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tab + Slider Before/After",
+      "blocks": [
+        {
+          "type": "tab_slider_ba"
+        },
+        {
+          "type": "tab_slider_ba"
+        },
+        {
+          "type": "tab_slider_ba"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

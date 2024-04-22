@@ -1,0 +1,308 @@
+.cart {
+  position: relative;
+  display: block;
+}
+.cart__empty-text,
+.is-empty .cart__contents,
+cart-items.is-empty .title-wrapper-with-link,
+.is-empty .cart__footer {
+  display: none;
+}
+.is-empty .cart__empty-text,
+.is-empty .cart__warnings {
+  display: block;
+}
+.cart__warnings {
+  display: none;
+  text-align: center;
+  padding: 0;
+}
+.cart__empty-text {
+  margin: 4.5rem 0 2rem;
+}
+.cart__contents > * + * {
+  margin-top: 2.5rem;
+}
+.cart__login-title {
+  margin: 5.5rem 0 0.5rem;
+}
+.cart__login-paragraph {
+  margin-top: 0.8rem;
+}
+.cart__login-paragraph a {
+  font-size: inherit;
+}
+@media screen and (min-width: 990px) {
+  .cart__empty-text {
+    margin: 0 0 3rem;
+  }
+}
+cart-items {
+  display: block;
+}
+.cart__items {
+  position: relative;
+  padding-bottom: 3rem;
+  border-bottom: none;
+}
+.cart__items--disabled {
+  pointer-events: none;
+}
+.cart__footer-wrapper:last-child .cart__footer {
+  padding-bottom: 5rem;
+}
+.cart__footer > div:only-child {
+  margin-left: auto;
+}
+.cart__footer .discounts {
+  margin-bottom: 1rem;
+}
+.cart__note {
+  height: fit-content;
+  top: 2.5rem;
+}
+.cart__note label {
+  display: flex;
+  align-items: flex-end;
+  position: absolute;
+  line-height: 1;
+  height: 1.8rem;
+  top: -3rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+.cart__note .field__input {
+  height: 100%;
+  position: relative;
+  border-radius: var(--inputs-radius);
+  padding: 1rem 2rem;
+}
+.cart__note .text-area {
+  resize: vertical;
+}
+.cart__note:after,
+.cart__note:hover.cart__note:after,
+.cart__note:before,
+.cart__note:hover.cart__note:before,
+.cart__note .field__input:focus,
+.cart__note .field__input {
+  border-bottom-right-radius: 0;
+}
+
+@media screen and (min-width: 750px) {
+  .cart__items {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    padding-bottom: 0;
+  }
+  .cart__contents > * + * {
+    margin-top: 0;
+  }
+  .cart__items + .cart__footer {
+    grid-column: 2;
+  }
+  .cart__footer {
+    display: flex;
+    justify-content: space-between;
+    border: 0;
+  }
+  .cart__footer-wrapper:last-child {
+    padding-top: 0;
+  }
+}
+.cart__ctas button {
+  width: 100%;
+}
+.cart__ctas > *:not(noscript:first-child) + * {
+  margin-top: 1rem;
+}
+.cart__update-button {
+  margin-bottom: 1rem;
+}
+.cart__dynamic-checkout-buttons {
+  max-width: 36rem;
+  margin: 0 auto;
+}
+.cart__dynamic-checkout-buttons div[role='button'] {
+  border-radius: var(--buttons-radius-outset) !important;
+}
+.cart__blocks > * + * {
+  margin-top: 1rem;
+}
+.cart-note__label {
+  display: inline-block;
+  margin-bottom: 1rem;
+  line-height: calc(1 + 1 / var(--font-body-scale));
+}
+.tax-note {
+  margin: 2.2rem 0 1.6rem auto;
+  text-align: center;
+  display: block;
+}
+.cart__checkout-button {
+  max-width: 36rem;
+}
+.cart__ctas {
+  text-align: center;
+}
+@media screen and (min-width: 750px) {
+  .cart-note {
+    max-width: 35rem;
+  }
+  .cart__update-button {
+    margin-bottom: 0;
+    margin-right: 0.8rem;
+  }
+  .tax-note {
+    margin-bottom: 2.2rem;
+    text-align: right;
+  }
+  [data-shopify-buttoncontainer] {
+    justify-content: flex-end;
+  }
+  .cart__ctas {
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+/* Custom */
+.cart--template{
+  padding:80px 0 100px;
+}
+.cart--template .section {
+  width: 100%;
+}
+.cart--template .cart__items-wrapper{
+  width: 67%;
+}
+.cart--template .cart__footer-wrapper {
+  padding-top:130px;
+  width: 32%;
+}
+.cart__footer-wrapper .cart__footer{
+  background-color: #F3F3F3;
+  padding: 40px 25px 40px;
+  flex-wrap:wrap;
+}
+.cart__discount label{
+  font-size: 20px;
+  font-weight: 600;
+  margin:0;
+  letter-spacing: 0;
+  margin:0 0 10px;
+  display:block;
+  line-height: 1;
+}
+.cart__discount{
+  margin-bottom:30px;
+}
+.cart__discount .discount-field{
+  justify-content: space-between;
+  gap: 10px;
+}
+.cart__discount .discount-field .field__input {
+  height: 45px;
+  font-size: 16px;
+  border: none;
+  width: calc(100% - 120px);
+}
+.cart__discount .discount-field .button{
+  min-width:1px;
+  width:120px;
+}
+.cart__footer-wrapper .cart__footer>*{
+  width: 100%;
+}
+.cart__footer-wrapper .cart__note label {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin: 0 0 10px;
+  display: block;
+  line-height: 1;
+  top: 0;
+  position: relative;
+  height: auto;
+  color:#000;
+}
+.cart__footer-wrapper .cart__note {
+  height: fit-content;
+  top: 0;
+  flex-wrap: wrap;
+}
+.cart__footer-wrapper .cart__note .field__input{
+  border:none;
+  font-size: 16px;
+}
+.cart__footer-wrapper .cart__blocks{
+  border-top: 1px solid #000000;
+  padding: 20px 0 0;
+  margin: 30px 0 0;
+}
+.cart__footer-wrapper .totals{
+  justify-content:space-between; 
+}
+.cart__footer-wrapper .cart__blocks label {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin: 0 0 20px;
+  display: block;
+  line-height: 1;
+}
+.cart__footer-wrapper .totals__total, .cart__footer-wrapper .totals__total-value{
+  font-size:18px;
+  font-weight:500;
+}
+.cart__footer-wrapper .tax-note{
+  margin:15px 0 20px;
+}
+.tax-note.rte {
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: left;
+}
+.cart__footer-wrapper .discounts__discount--position{
+  font-size:14px;
+}
+.cart--template.is-empty .cart__items-wrapper{
+  width: 100%;
+}
+/**/
+@media screen and (max-width: 1439px){
+  .cart--template {
+    padding: 40px 0 80px;
+  } 
+  .cart__discount label,
+  .cart__footer-wrapper .cart__note label,
+  .cart__footer-wrapper .cart__blocks label{
+    font-size:18px;
+  }
+}
+@media screen and (max-width: 1199px){
+  .cart--template .cart__items-wrapper{
+    width: 100%;
+  }
+  .cart--template .cart__footer-wrapper {
+    padding-top:0;
+    width: 100%;
+    margin-top: 30px;
+  }
+  .cart--template .cart__footer-wrapper .page-width{
+    max-width:600px;
+  }
+  .cart__footer-wrapper .cart__checkout-button{
+    max-width:100%;
+  }
+}
+@media screen and (max-width: 749px){
+  .cart__footer-wrapper:last-child .cart__footer {
+    padding-bottom: 3rem;
+  }
+  .cart--template {
+    padding: 30px 0 70px;
+  }
+  .cart__footer-wrapper .cart__footer{
+    padding:30px 10px;
+  }
+}

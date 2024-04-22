@@ -1,0 +1,157 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.4 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding">
+  <div class="page-width">
+    {%- if section.settings.title != blank or section.settings.content != blank -%}
+    <div class="title-wrapper">
+      {%- if section.settings.title != blank -%}
+        <h2 class="title {{ section.settings.heading_size }}">
+          {{ section.settings.title }}
+        </h2>
+      {%- endif -%}
+      {% if section.settings.content != blank %}
+      <div class="rte">
+        {{ section.settings.content }}
+      </div>
+      {%- endif -%}
+    </div>
+    {%- endif -%}
+    
+    {% if section.blocks.size > 0 %}
+    <div class="contact-info__list flex-wrap">
+        {%- for block in section.blocks -%}
+          <div class="contact-info__item">
+            {% if block.settings.map != blank %}
+            <div class="location__map">
+              {{ block.settings.map }}
+            </div>
+            {% endif %}
+          
+            {% if block.settings.title != blank %}
+            <p class="location__name">{{ block.settings.title }}</p>
+            {% endif %}
+          
+            {% if block.settings.text != blank %}
+            <div class="rte">
+              {{ block.settings.text }}
+            </div>
+            {% endif %}
+            
+          </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Contact Information",
+    "tag": "section",
+    "class": "section contact-info-section",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "settings": [
+      {
+        "type": "inline_richtext",
+        "id": "title",
+        "default": "Book a Bathroom Consultation",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "heading_size",
+        "options": [
+          {
+            "value": "h2",
+            "label": "t:sections.all.heading_size.options__1.label"
+          },
+          {
+            "value": "h1",
+            "label": "t:sections.all.heading_size.options__2.label"
+          },
+          {
+            "value": "h0",
+            "label": "t:sections.all.heading_size.options__3.label"
+          }
+        ],
+        "default": "h1",
+        "label": "t:sections.all.heading_size.label"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "default": "<p>Share information about your brand with your customers.</p>",
+        "label": "t:sections.rich-text.blocks.text.settings.text.label"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.all.padding.section_padding_heading"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 150,
+        "step": 10,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_top",
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 150,
+        "step": 10,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_bottom",
+        "default": 40
+      }
+    ],
+    "blocks": [
+    {
+      "type": "information",
+      "name": "Location",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Location Name",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+          "label": "t:sections.rich-text.blocks.text.settings.text.label"
+        },
+        {
+          "type": "html",
+          "id": "map",
+          "label": "Map"
+        }
+      ]
+    }
+  ],
+    "presets": [
+      {
+        "name": "Contact Information",
+        "category": "Contact"
+      }
+    ]
+  }
+{% endschema %}

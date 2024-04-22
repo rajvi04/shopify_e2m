@@ -1,0 +1,244 @@
+.contact img {
+  max-width: 100%;
+}
+.contact .form__message {
+  align-items: flex-start;
+  font-weight:500;
+}
+.contact .icon-success {
+  margin-top: 0.2rem;
+}
+.contact .field {
+  margin-bottom: 1.5rem;
+}
+@media screen and (min-width: 750px) {
+  .contact .field {
+    margin-bottom: 2rem;
+  }
+}
+.contact__button {
+  margin-top: 2rem;
+}
+.enquiry--form .contact__button {
+    margin-top: 2rem;
+}
+@media screen and (min-width: 1200px) {
+  .contact__button {
+    margin-top: 4rem;
+  } 
+}
+@media screen and (min-width: 750px) {
+  .contact__fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 2rem;
+  }
+}
+
+/* Custom */
+.contact-form-section .page-width{
+}
+.contact--grid{
+  position:relative;
+  align-items:flex-start;
+}
+.contact--grid-item{
+  width:50%;
+}
+.contact--grid-item.form--left{
+  padding-right:100px;
+  position:relative;
+}
+.contact--grid-item .title{
+  text-align:left;
+  margin-bottom:40px;
+}
+.contact--grid-item.form--right .title.h1{
+  font-size:28px;
+  margin-bottom:10px;
+  font-weight:600;
+  font-family:var(--font-SemiBold);
+}
+.field .text-area{
+  min-height:12rem;
+  letter-spacing:0;
+}
+/* V2 */
+.contact-form-section.v2{
+  position:relative;
+}
+.contact-form-section.v2 .page-width{
+  max-width:1200px;
+}
+.contact-form-section.v2 .title-wrapper.no-border .title+.rte{
+  max-width:700px;
+}
+.contact-form-section.v2 .contact--grid{
+  background-color:#fff;
+  align-items:center;
+}
+.contact-form-section.v2 .contact--grid-item.form--left{
+  padding-right:0;
+}
+.contact-form-section.v2 .contact--grid-item img{
+  display:block;
+}
+.contact-form-section.v2 .form--right{
+  padding:30px;
+}
+.contact-form-section.v2 .contact--grid-item .title{
+  font-size:26px;
+  text-align: center;
+}
+.contact-form-section.v2 form .button{
+  width:100%; 
+}
+.contact-form-section.v2 .field__input{
+  background-color:#fff;
+}
+.contact-form-section .field select.field__input{
+  line-height:normal;
+}
+.contact-form-section .field.select {
+  position: relative;
+}
+.contact-form-section .field.select svg {
+  position: absolute;
+  right: 15px;
+  top: 25px;
+}
+.contact-form-section .field.select#form--appointment-time svg {
+  top: 20px;
+}
+
+/* Enquiry Form */
+.contact-form-section.enquiry--form{
+  position:relative;
+}
+.contact-form-section.enquiry--form .title-wrapper{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 70px;
+}
+.contact-form-section.enquiry--form .contact--grid-item .title-wrapper .title{
+  margin-bottom:0;
+  color: #fff;
+}
+.contact-form-section.enquiry--form .title-wrapper .rte{
+  text-align:left;
+  color: #fff;
+}
+.contact-form-section.enquiry--form .contact--grid{
+  justify-content:space-between;
+  background-color:#fff;
+  align-items: center;
+}
+.contact-form-section.enquiry--form .contact--grid img{
+  width:100%;
+}
+.contact-form-section.enquiry--form .contact--grid-item.form--left{
+  padding-right:0;
+  width:42%;
+  align-self: normal;
+}
+.contact-form-section.enquiry--form .contact--grid-item.form--left img{
+  display:block;
+  height: 100%;
+  object-fit: cover;
+}
+.contact-form-section.enquiry--form .contact--grid-item.form--left:before{
+  content: "";
+  display: block;
+  background-color: rgba(0,0,0,0.75);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.contact-form-section.enquiry--form .contact--grid-item.form--right{
+  padding:60px;
+  width: 58%;
+}
+.enquiry--form .contact--grid-item.form--right .title{
+  margin-bottom:10px;
+}
+.enquiry--form .contact--grid-item.form--right .rte{
+  margin-bottom:30px; 
+}
+.contact-form-section.enquiry--form .field .field__input{
+  background-color:#fff;
+}
+
+@media screen and (max-width: 1365px){
+  .contact-form-section.enquiry--form .contact--grid-item.form--right{
+    padding:20px 30px;
+  }
+}
+@media screen and (max-width: 1199px){
+  .contact-form-section.v2 .contact--grid-item .title{
+    margin-bottom:30px;
+    font-size:22px;
+  }
+}
+@media screen and (max-width: 989px){
+  .contact--grid-item{
+    width:100%;
+  }
+  .contact--grid-item.form--left{
+    padding-right:0;
+    margin-bottom:50px;
+  }
+  .contact-form-section.v2 .contact--grid-item img{
+    width:100%;
+  }
+  .contact-form-section.v2 .form--right {
+    padding: 0 30px 50px;
+  }
+  .contact-form-section.enquiry--form .contact--grid-item.form--left{
+    width:100%;
+    margin-bottom:0;
+  }
+  .contact-form-section.enquiry--form .contact--grid-item.form--right {
+    padding: 30px 30px;
+    width: 100%;
+  }
+}
+@media screen and (max-width: 749px){
+  .contact-form-section.v2 .form--right {
+      padding: 0 15px 50px;
+  }
+  .contact-form-section.v2 .contact--grid-item .title {
+    margin-bottom: 25px;
+    font-size: 18px;
+  }
+  .field .text-area {
+    min-height: 10rem;
+  }
+  .contact-form-section.enquiry--form .title-wrapper{
+    padding:30px;
+  }
+  .contact-form-section.enquiry--form .contact--grid-item.form--right {
+    padding: 30px 10px;
+  }
+  .contact-form-section .field.select svg{
+    top:20px;
+    right:20px;
+  }
+  .contact-form-section .field.select#form--appointment-time svg {
+    top: 15px;
+    right: 18px;
+  }
+  .contact-form-section .contact__fields#date-time-wrapper{
+    flex-wrap:wrap;
+  }
+  .contact-form-section.enquiry--form .field select.field__input {
+    letter-spacing: 0;
+    padding-right: 35px;
+  }
+}

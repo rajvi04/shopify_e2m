@@ -1,0 +1,107 @@
+{{ 'component-breadcrumbs.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top:15px;
+    padding-bottom: 10px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top:20px;
+      padding-bottom: 10px;
+    }
+  }
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+    <div class="page-width">
+      {% assign t = template | split: '.' | first  %}
+
+      <div class="breadcrumbs" aria-label="breadcrumbs">
+        <ul class="flex-wrap">
+          <li><a href="/" title="Home">Home</a></li><span class="divider">/</span>
+          {% case t %}        
+          {% when 'page' %}
+            <li><a href="{{ page.url }}" aria-current="page">{{ page.title }}</a></li>
+          {% when 'product' %}
+            {% if collection.url %}
+            <li>{{ collection.title | link_to: collection.url }}</li><span class="divider">/</span>
+            {% endif %}
+            <li><span aria-current="page">{{ product.title }}</span></li>
+          {% when 'collection' and collection.handle %}
+            {% if current_tags %}
+              <li>{{ collection.title | link_to: collection.url }}</li>
+              {% comment %}<li>{% capture tag_url %}{{ collection.url }}/{{ current_tags | join: "+"}}{% endcapture %}<a href="{{ tag_url }}" aria-current="page">{{ current_tags | join: " + "}}</a></li>{% endcomment %}
+            {% else %}
+              <li><span aria-current="page">{{ collection.title }}</span></li>{% endif %}
+          {% when 'blog' %}
+            {% if current_tags %}
+              <li>{{ blog.title | link_to: blog.url }}</li>
+              <li>{% capture tag_url %}{{blog.url}}/tagged/{{ current_tags | join: "+" }}{% endcapture %}<a href="{{ tag_url }}" aria-current="page">{{ current_tags | join: " + " }}</a></li>
+            {% else %}
+              <li><span aria-current="page">{{ blog.title }}</span></li>
+            {% endif %}
+          {% when 'article' %}
+            <li>{{ blog.title | link_to: blog.url }}</li>
+            <li><span aria-current="page">{{ article.title }}</span></li>
+          {% else %}
+            <li aria-current="page"><span aria-current="page">{{ page_title }}</span></li>          
+          {% endcase %}      
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Breadcrumbs",
+    "tag": "section",
+    "class": "section breadcrumbs",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "settings": [
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "info": "t:sections.all.colors.has_cards_info",
+        "default": "background-1"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.all.padding.section_padding_heading"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 30,
+        "step": 5,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_top",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 30,
+        "step": 5,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_bottom",
+        "default": 15
+      }
+    ],
+    "presets": [
+    {
+      "name": "Breadcrumbs"
+    }
+  ]
+  }
+{% endschema %}

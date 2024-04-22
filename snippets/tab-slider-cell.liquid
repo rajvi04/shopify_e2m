@@ -1,0 +1,25 @@
+<div class="carousel-cell">
+  <div class="slider_ba__item">            
+    <div class="slider_ba__image">
+      {%- if slider_image != blank -%}
+      {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+      {%- capture sizes -%}
+        (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+        (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+      {%- endcapture -%}            
+      {{
+        slider_image
+        | image_url: width: 510
+        | image_tag: loading: 'lazy', sizes: sizes, widths: widths
+      }}
+      {% else %}
+      {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+    {% if slider_text != blank %}
+    <div class="slider_ba__text">
+      {{ slider_text }}  
+    </div>
+    {% endif %}
+  </div>
+</div>

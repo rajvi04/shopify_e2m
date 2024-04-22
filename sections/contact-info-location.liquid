@@ -1,0 +1,142 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.4 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding">
+  <div class="page-width">
+
+    {%- if section.settings.title != blank -%}
+    <div class="title-wrapper no-border">
+      <h2 class="title h1{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        {{ section.settings.title }}
+      </h2>
+    </div>
+    {%- endif -%}
+
+    {% if section.blocks.size > 0 %}
+    <div class="flex-wrap contact-info__list">
+        {%- for block in section.blocks -%}
+          <div class="contact-info__item">
+            {% if block.settings.title != blank %}
+            <p class="location__name">{{ block.settings.title }}</p>
+            {% endif %}
+          
+            {% if block.settings.text != blank %}
+            <div class="rte">
+              {{ block.settings.text }}
+            </div>
+            {% endif %}
+
+            <div class="location_direction">
+              {% if block.settings.map != blank %}
+              <div class="location__map">
+                {{ block.settings.map }}
+              </div>
+              {% endif %}
+              {% if block.settings.button_label != blank %}
+              <a href="{{ block.settings.button_link }}" class="button button--primary">{{ block.settings.button_label }}</a>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Contact Info/Location",
+    "tag": "section",
+    "class": "section contact-info-section v2",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "settings": [
+       {
+        "type": "inline_richtext",
+        "id": "title",
+        "default": "Heading",
+        "label": "t:sections.collection-list.settings.title.label"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.all.padding.section_padding_heading"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 150,
+        "step": 10,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_top",
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 150,
+        "step": 10,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_bottom",
+        "default": 40
+      }
+    ],
+    "blocks": [
+    {
+      "type": "information",
+      "name": "Location",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Location Name",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+          "label": "t:sections.rich-text.blocks.text.settings.text.label"
+        },
+        {
+          "type": "html",
+          "id": "map",
+          "label": "Map"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Button label",
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_label.label",
+          "info": "t:sections.rich-text.blocks.buttons.settings.button_label.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_link.label"
+        }
+      ]
+    }
+  ],
+    "presets": [
+      {
+        "name": "Contact Info/Location",
+        "category": "Contact"
+      }
+    ]
+  }
+{% endschema %}

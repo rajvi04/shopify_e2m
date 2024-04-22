@@ -1,0 +1,347 @@
+{% comment %}
+  {% render "custom-tag-filter-accordion" , filterTypeFilter: filterTypeColor, replaceString: "filter_type_colour", customId: "" , tabName: "color", customClass: "facets__disclosure-vertical", filterFor: "mobile", dataIndexPosition: "1"   %}
+{% endcomment %}
+
+{% assign color_swatch = settings.color_swatches | newline_to_br | split: '<br />' %}
+{% assign filterType = filterTypeFilter | split: ',' %}
+{% if filterFor == 'desktop' %}
+  {% if filterType.size > 0 %}
+    <details id="Details-{{ dataIndexPosition }}-template--{{ customId }}" class=" {{ customClass }} js-filter" data-index="{{ dataIndexPosition }}">
+      <summary
+        class="facets__summary caption-large focus-offset"
+        aria-label="Color (0 selected)"
+        role="button"
+        aria-expanded="false"
+        aria-controls="Facet-{{ dataIndexPosition }}-template--14635420024918__product-grid-{{ customId }}"
+      >
+        <div>
+          <span>
+            {{ tabName }}
+            <span class="facets__selected no-js-hidden hidden"> (0)</span></span
+          >
+          <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
+          </svg>
+        </div>
+      </summary>
+      <div
+        id="Facet-{{ dataIndexPosition }}-template--14635420024918__product-grid-{{ customId }}"
+        class="parent-display facets__display-vertical option-{{ customId }}"
+      >
+        <fieldset class="facets-wrap parent-wrap facets-wrap-vertical">
+          <legend class="visually-hidden">{{ tabName }}</legend>
+          <ul class="list-unstyled no-js-hidden" role="list">
+              {% for tag in filterType %}
+              {% assign textToReplace = '>' | append: tag | append: '<' %}
+              {% assign UpdatedTagName = tag | replace: replaceString, '' %}
+              {% assign FinalTagName = '>' | append: UpdatedTagName | append: '<' %}
+              {% assign addLabelHead = '<input type="checkbox" class="custom-checkbox" id="Filter-filter--' | append: customId | append: '"> <a'%}
+              {% assign addLabelTail = '</label>' %}
+              {% capture ColorSwatch %}
+                {% if tabName == "Colour" %} 
+                  {% assign desired_color_name = UpdatedTagName | downcase %}
+                  {% for swatch_line in color_swatch %}
+                    {% assign swatch_data = swatch_line | split: ': ' %}
+                    {% assign color_name = swatch_data[0] | strip | downcase %}
+                    {% assign color_code = swatch_data[1] | strip %}
+                      {% if color_name == desired_color_name %}
+                        {% if color_code contains "#" %}
+                          <div class="color-swatch" area-label="{{ UpdatedTagName }}" style="background-color: {{ color_code }};">{{ color_code }}</div> 
+                        {% else %} 
+                          {% assign file_name = color_code %}
+                          {% assign file_url = file_name | file_url %}
+                          <div class="color-swatch" area-label="{{ UpdatedTagName }}" style="background-image: url('{{ file_url }}');">{{ color_code }}</div> 
+                        {% endif %}
+                      {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endcapture %}
+              {% assign addLabelHeadFront = "<label for='Filter-filter--" |append: customId | append: forloop.index | append: "'>" %}
+              {% if current_tags contains tag %}
+                {% assign addLabelHead = addLabelHeadFront | append: '<input checked type="checkbox" class="custom-checkbox" id="Filter-filter--' | append: customId | append: forloop.index | append: '">' |append : ColorSwatch | append:' <a' %}
+                <li class="list-menu__item facets__item tag-filters__item active">
+                  {{ tag | link_to_remove_tag: tag | replace: textToReplace, FinalTagName | replace: '<a', addLabelHead }} {{ addLabelTail }}
+                </li>
+              {% else %}
+                {% assign addLabelHead = addLabelHeadFront |append: '<input type="checkbox" class="custom-checkbox" id="Filter-filter--' | append: customId | append: forloop.index | append: '">' | append: ColorSwatch | append: ' <a' %}
+                <li class="list-menu__item facets__item tag-filters__item">
+                  {{ tag | link_to_add_tag: tag | replace: textToReplace, FinalTagName | replace: '<a', addLabelHead }} {{ addLabelTail }}
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </fieldset>
+      </div>
+    </details>
+  {% endif %}
+{% elsif filterFor == 'mobile' %}
+  <details
+    id="Details-Mobile-{{ dataIndexPosition }}-template--14635420024918__product-grid--{{ customId }}"
+    class="mobile-facets__details js-filter"
+    data-index="mobile-{{ dataIndexPosition }}"
+  >
+    <summary class="mobile-facets__summary focus-inset">
+      <div>
+        <span>{{ tabName }}</span>
+        <span class="mobile-facets__arrow no-js-hidden">
+          <svg
+            viewBox="0 0 14 10"
+            fill="none"
+            aria-hidden="true"
+            focusable="false"
+            class="icon icon-arrow"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor"></path>
+          </svg>
+        </span>
+        <noscript>
+          <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
+          </svg>
+        </noscript>
+      </div>
+    </summary>
+    <div
+      id="FacetMobile-{{ dataIndexPosition }}-template--14635420024918__product-grid--{{ customId }}"
+      class="mobile-facets__submenu gradient option-{{ customId }}"
+    >
+      <button class="mobile-facets__close-button link link--text focus-inset" aria-expanded="true" type="button">
+        <svg
+          viewBox="0 0 14 10"
+          fill="none"
+          aria-hidden="true"
+          focusable="false"
+          class="icon icon-arrow"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor"></path>
+        </svg>
+        {{ tabName }}
+      </button>
+      <ul class="mobile-facets__list list-unstyled" role="list">
+        {% for tag in filterType %}
+          {% assign textToReplace = '>' | append: tag | append: '<' %}
+          {% assign UpdatedTagName = tag | replace: replaceString, '' %}
+          {% assign FinalTagName = '>' | append: UpdatedTagName | append: '<' %}
+          {% assign addLabelHead = '<input type="checkbox" class="mobile-facets__checkbox" id="Filter-filter--' | append: customId | append: '"> <a' %}
+          {% assign addLabelTail = '</label>' %}
+          {% capture ColorSwatch %}
+            {% if tabName == "Colour" %} 
+              {% assign desired_color_name = UpdatedTagName | downcase %}
+              {% for swatch_line in color_swatch %}
+                {% assign swatch_data = swatch_line | split: ': ' %}
+                {% assign color_name = swatch_data[0] | strip | downcase %}
+                {% assign color_code = swatch_data[1] | strip %}
+                  {% if color_name == desired_color_name %}
+                    {% if color_code contains "#" %}
+                      <div class="color-swatch" style="background-color: {{ color_code }};">{{ color_code }}</div>
+                    {% else %} 
+                      {% assign file_name = color_code %}
+                      {% assign file_url = file_name | file_url %}
+                      <div class="color-swatch" style="background-image: url('{{ file_url }}');">{{ color_code }}</div>
+                    {% endif %}
+                  {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endcapture %}
+          {% if current_tags contains tag %}
+            {% assign addLabelHead = '<input checked type="checkbox" class="custom-checkbox" id="Filter-filter--' | append: customId | append: '">' | append: ColorSwatch | append: ' <a' %}
+            <li class="mobile-facets__item list-menu__item tag-filters__item active">
+              {{ tag | link_to_remove_tag: tag | replace: textToReplace, FinalTagName | replace: '<a', addLabelHead }}
+            </li>
+          {% else %}
+            {% assign addLabelHead = '<input type="checkbox" class="custom-checkbox" id="Filter-filter--' | append: customId | append: '">' | append: ColorSwatch | append: ' <a' %}
+            <li class="mobile-facets__item list-menu__item tag-filters__item">
+              {{ tag | link_to_add_tag: tag | replace: textToReplace, FinalTagName | replace: '<a', addLabelHead }}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </details>
+{% endif %}
+{% comment %}
+      {% assign filterTypeColor = filterTypeColor | split: "," %}
+      {% if filterTypeColor.size > 0 %}
+        <details id="Details-1-template--14635420024918__product-grid-status" class=" facets__disclosure-vertical js-filter" data-index="1">
+          <summary class="facets__summary caption-large focus-offset" aria-label="Color (0 selected)" role="button" aria-expanded="false" aria-controls="Facet-1-template--14635420024918__product-grid-status">
+            <div>
+              <span>Color <span class="facets__selected no-js-hidden hidden"> (0)</span></span>
+              <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
+              </svg>
+            </div>
+          </summary>
+          <div id="Facet-1-template--14635420024918__product-grid-status" class="parent-display facets__display-vertical">
+            <fieldset class="facets-wrap parent-wrap facets-wrap-vertical">
+              <legend class="visually-hidden">Color</legend>
+              <ul class="list-unstyled no-js-hidden" role="list">
+               {% for tag in filterTypeColor %}
+                  {% assign textToReplace = ">" | append: tag | append: "<" %}
+                  {% assign UpdatedTagName = tag | replace: "filter_type_colour:", "" %}
+                  {% assign FinalTagName = ">" | append: UpdatedTagName | append: "<" %}
+                  {% if current_tags contains tag %}
+                    <li class="list-menu__item facets__item tag-filters__item active">{{ tag | link_to_remove_tag: tag | replace: textToReplace, FinalTagName }}</li>
+                  {% else %}
+                    <li class="list-menu__item facets__item tag-filters__item">{{ tag | link_to_add_tag: tag | replace: textToReplace, FinalTagName }}</li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </fieldset>
+          </div>
+        </details>
+       {% endif %}
+
+      {% assign filterTypeSize = filterTypeSize | split: "," %}
+      {% if filterTypeSize.size > 0 %}
+        <details id="Details-1-template--14635420024918__product-grid-size" class=" facets__disclosure-vertical js-filter" data-index="1">
+          <summary class="facets__summary caption-large focus-offset" aria-label="Color (0 selected)" role="button" aria-expanded="false" aria-controls="Facet-1-template--14635420024918__product-grid-size">
+            <div>
+              <span>Size <span class="facets__selected no-js-hidden hidden"> (0)</span></span>
+              <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
+              </svg>
+            </div>
+          </summary>
+          <div id="Facet-1-template--14635420024918__product-grid-size" class="parent-display facets__display-vertical">
+            <fieldset class="facets-wrap parent-wrap facets-wrap-vertical">
+              <legend class="visually-hidden">Color</legend>
+              <ul class="list-unstyled no-js-hidden" role="list">
+         {% for tag in filterTypeSize %}
+            {% assign textToReplace = ">" | append: tag | append: "<" %}
+            {% assign UpdatedTagName = tag | replace: "filter_type_size:", "" %}
+            {% assign FinalTagName = ">" | append: UpdatedTagName | append: "<" %}
+            {% if current_tags contains tag %}
+              <li class="list-menu__item facets__item tag-filters__item active">{{ tag | link_to_remove_tag: tag | replace: textToReplace, FinalTagName }}</li>
+            {% else %}
+              <li class="list-menu__item facets__item tag-filters__item">{{ tag | link_to_add_tag: tag | replace: textToReplace, FinalTagName }}</li>
+            {% endif %}
+          {% endfor %}
+            </ul>
+            </fieldset>
+          </div>
+        </details>
+      {% endif %}
+
+      {% assign filterTypeStyle = filterTypeStyle | split: "," %}
+      {% if filterTypeStyle.size > 0 %}
+        <details id="Details-1-template--14635420024918__product-grid-style" class=" facets__disclosure-vertical js-filter" data-index="1">
+          <summary class="facets__summary caption-large focus-offset" aria-label="Color (0 selected)" role="button" aria-expanded="false" aria-controls="Facet-1-template--14635420024918__product-grid-style">
+            <div>
+              <span>Size <span class="facets__selected no-js-hidden hidden"> (0)</span></span>
+              <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
+              </svg>
+            </div>
+          </summary>
+          <div id="Facet-1-template--14635420024918__product-grid-style" class="parent-display facets__display-vertical">
+            <fieldset class="facets-wrap parent-wrap facets-wrap-vertical">
+              <legend class="visually-hidden">Color</legend>
+              <ul class="list-unstyled no-js-hidden" role="list">
+         {% for tag in filterTypeStyle %}
+            {% assign textToReplace = ">" | append: tag | append: "<" %}
+            {% assign UpdatedTagName = tag | replace: "filter_type_style:", "" %}
+            {% assign FinalTagName = ">" | append: UpdatedTagName | append: "<" %}
+            {% if current_tags contains tag %}
+              <li class="list-menu__item facets__item tag-filters__item active">{{ tag | link_to_remove_tag: tag | replace: textToReplace, FinalTagName }}</li>
+            {% else %}
+              <li class="list-menu__item facets__item tag-filters__item">{{ tag | link_to_add_tag: tag | replace: textToReplace, FinalTagName }}</li>
+            {% endif %}
+          {% endfor %}
+                          </ul>
+            </fieldset>
+          </div>
+        </details>
+      {% endif %}
+
+
+
+
+    {% assign filterTypeFinish = filterTypeFinish | split: "," %}
+    {% if filterTypeFinish.size > 0 %}
+      <ul class="tag-filters">
+        <p>Finish</p>
+       {% for tag in filterTypeFinish %}
+          {% assign textToReplace = ">" | append: tag | append: "<" %}
+          {% assign UpdatedTagName = tag | replace: "filter_type_finish:", "" %}
+          {% assign FinalTagName = ">" | append: UpdatedTagName | append: "<" %}
+          {% if current_tags contains tag %}
+            <li class="tag-filters__item active">{{ tag | link_to_remove_tag: tag | replace: textToReplace, FinalTagName }}</li>
+          {% else %}
+            <li class="tag-filters__item">{{ tag | link_to_add_tag: tag | replace: textToReplace, FinalTagName }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+
+
+    {% assign filterTypeMaterial = filterTypeMaterial | split: "," %}
+    {% if filterTypeMaterial.size > 0 %}
+      <ul class="tag-filters">
+        <p>Material</p>
+       {% for tag in filterTypeMaterial %}
+          {% assign textToReplace = ">" | append: tag | append: "<" %}
+          {% assign UpdatedTagName = tag | replace: "filter_type_material:", "" %}
+          {% assign FinalTagName = ">" | append: UpdatedTagName | append: "<" %}
+          {% if current_tags contains tag %}
+            <li class="tag-filters__item active">{{ tag | link_to_remove_tag: tag | replace: textToReplace, FinalTagName }}</li>
+          {% else %}
+            <li class="tag-filters__item">{{ tag | link_to_add_tag: tag | replace: textToReplace, FinalTagName }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% assign filterTypeUsage = filterTypeUsage | split: "," %}
+   {% if filterTypeUsage.size > 0 %}
+      <ul class="tag-filters">
+        <p>Usage</p>
+       {% for tag in filterTypeUsage %}
+          {% assign textToReplace = ">" | append: tag | append: "<" %}
+          {% assign UpdatedTagName = tag | replace: "filter_type_usage:", "" %}
+          {% assign FinalTagName = ">" | append: UpdatedTagName | append: "<" %}
+          {% if current_tags contains tag %}
+            <li class="tag-filters__item active">{{ tag | link_to_remove_tag: tag | replace: textToReplace, FinalTagName }}</li>
+          {% else %}
+            <li class="tag-filters__item">{{ tag | link_to_add_tag: tag | replace: textToReplace, FinalTagName }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% assign filterTypeEdge = filterTypeEdge | split: "," %}
+    {% if filterTypeEdge.size > 0 %}
+      <ul class="tag-filters">
+        <p>Edge</p>
+       {% for tag in filterTypeEdge %}
+          {% assign textToReplace = ">" | append: tag | append: "<" %}
+          {% assign UpdatedTagName = tag | replace: "filter_type_edge:", "" %}
+          {% assign FinalTagName = ">" | append: UpdatedTagName | append: "<" %}
+          {% if current_tags contains tag %}
+            <li class="tag-filters__item active">{{ tag | link_to_remove_tag: tag | replace: textToReplace, FinalTagName }}</li>
+          {% else %}
+            <li class="tag-filters__item">{{ tag | link_to_add_tag: tag | replace: textToReplace, FinalTagName }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+  {% assign filterTypeShape = filterTypeShape | split: "," %}
+  {% if filterTypeShape.size > 0 %}
+      <ul class="tag-filters">
+        <p>Shape</p>
+       {% for tag in filterTypeShape %}
+          {% assign textToReplace = ">" | append: tag | append: "<" %}
+          {% assign UpdatedTagName = tag | replace: "filter_type_shape:", "" %}
+          {% assign FinalTagName = ">" | append: UpdatedTagName | append: "<" %}
+          {% if current_tags contains tag %}
+            <li class="tag-filters__item active">{{ tag | link_to_remove_tag: tag | replace: textToReplace, FinalTagName }}</li>
+          {% else %}
+            <li class="tag-filters__item">{{ tag | link_to_add_tag: tag | replace: textToReplace, FinalTagName }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+{% endcomment %}

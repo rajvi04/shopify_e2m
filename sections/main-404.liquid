@@ -1,0 +1,42 @@
+<style type="text/css">
+  .template-404{
+    padding-top:150px; 
+    padding-bottom:150px; 
+  }
+  .template-404 .title + * {
+    margin-top: 1rem;
+  }
+  .template-404.page-width{
+    max-width:600px;
+  }
+  .template-404 .button{
+    margin-top:50px; 
+  }
+  @media screen and (min-width: 750px) {
+    .template-404 .title + * {
+      margin-top: 2rem;
+    }
+  }
+  @media screen and (max-width: 989px) {
+    .template-404{
+      padding-top:70px; 
+      padding-bottom:70px; 
+    }
+    .template-404 .button{
+      margin-top:25px; 
+    }
+  }
+</style>
+
+<div class="template-404 page-width center">
+  <h1 class="title">
+    {{ 'templates.404.title' | t }}
+  </h1>
+  <p>
+    {{ 'templates.404.subtext' | t }}
+  </p>
+  
+  <a href="{{ routes.all_products_collection_url }}" class="button">
+    {{ 'general.continue_shopping' | t }}
+  </a>
+</div>

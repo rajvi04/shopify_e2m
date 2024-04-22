@@ -1,0 +1,186 @@
+<div class="uspbar color-{{ section.settings.color_scheme }} gradient">
+  <div class="flex-wrap page-width">
+    {% if section.settings.usp_1_text != blank %}
+    <div class="usp-item">
+      <a {% if section.settings.usp_1_link != blank %}href="{{ section.settings.usp_1_link }}"{% endif %}>
+       {{ section.settings.usp_1_svg }}
+       <span class="usp--text">{{ section.settings.usp_1_text }}</span>
+      </a>
+    </div>
+    {% endif %}
+    
+    {% if section.settings.usp_2_text != blank %}
+    <div class="usp-item">
+      <a {% if section.settings.usp_2_link != blank %}href="{{ section.settings.usp_2_link }}"{% endif %}>
+       {{ section.settings.usp_2_svg }}
+       <span class="usp--text">{{ section.settings.usp_2_text }}</span>
+      </a>
+    </div>
+    {% endif %}
+    
+    {% if section.settings.usp_3_text != blank %}
+    <div class="usp-item">
+      <a {% if section.settings.usp_3_link != blank %}href="{{ section.settings.usp_3_link }}"{% endif %}>
+       {{ section.settings.usp_3_svg }}
+       <span class="usp--text">{{ section.settings.usp_3_text }}</span>
+      </a>
+    </div>
+    {% endif %}
+
+    <div class="usp-item usp-phone">
+      {{ section.settings.phone_svg }}
+      {% if section.settings.phone_1 != blank %}
+      <a href="tel:{{ section.settings.phone_1 }}">
+        {{ section.settings.phone_1 }}
+      </a>
+      {% endif %}
+      {% if section.settings.phone_2 != blank %}<span class="phone-divider"></span>
+      <a href="tel:{{ section.settings.phone_2 }}">
+        {{ section.settings.phone_2 }}
+      </a>
+      {% endif %}
+
+      {%- form 'localization', class: 'multi-selectors' -%}
+      <div class="currency--box">
+        <div class="currency--inner" data-disclosure-currency>
+          <button class="currency-button" type="button" class="" aria-expanded="false" aria-controls="CurrencyList-{{ location }}" aria-describedby="CurrencyHeading-{{ location }}" data-disclosure-toggle>
+            {%- if show_currency_flags -%}
+              <span class="" data-flag="{{ form.current_currency.iso_code }}" aria-hidden="true"></span>
+            {%- endif -%}
+            <span class="currency--selected">
+              {% comment %}{{ form.current_currency.iso_code }}{% endcomment %}{%- if form.current_currency.symbol -%}{{ form.current_currency.symbol }}{%- endif -%}
+            </span>
+            <span class="currency-trigger">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
+                <path d="M1 0.999999L6 6L11 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+          <ul id="CurrencyList-{{ location }}" class="toolbar disclosure-list--down disclosure-list--left" data-disclosure-list>
+            {%- for currency in form.available_currencies -%}
+              <li class="">
+                <a class="" href="#"{% if currency.iso_code == form.current_currency.iso_code %} aria-current="true"{% endif %} data-value="{{ currency.iso_code }}" data-disclosure-option>
+                  {%- if show_currency_flags -%}
+                    <span class="" data-flag="{{ currency.iso_code }}" aria-hidden="true"></span>
+                  {%- endif -%}
+  
+                  <span class="">
+                    {{ currency.iso_code }} {%- if currency.symbol -%}{{ currency.symbol }}{%- endif -%}
+                  </span>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+          <input type="hidden" name="currency_code" value="{{ form.current_currency.iso_code }}" data-disclosure-input>
+        </div>
+      </div>
+      {%- endform -%}
+    </div>
+
+  </div>
+</div> 
+<script>
+  const currencyTrigger = document.querySelector('.currency-button');
+  const disclosureList = document.querySelector('.disclosure-list--down');
+  currencyTrigger.addEventListener('click', function() {
+    disclosureList.classList.toggle('active'); // Replace 'your-toggle-class-name' with the actual class you want to toggle
+  });
+</script>
+{% schema %}
+{
+  "name": "USP",
+  "class": "usp-bar-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "accent-1"
+    },    
+    {
+      "type": "header",
+      "content": "USP 1"
+    },
+    {
+      "type": "text",
+      "id": "usp_1_text",        
+      "label": "USP 1 Text"
+    },
+    {
+      "type": "textarea",
+      "id": "usp_1_svg",          
+      "label": "USP 1 SVG"
+    },
+    {
+      "type": "url",
+      "id": "usp_1_link",
+      "label": "USP 1 Link"
+    },
+    {
+      "type": "header",
+      "content": "USP 2"
+    },
+    {
+      "type": "text",
+      "id": "usp_2_text",        
+      "label": "USP 2 Text"
+    },
+    {
+      "type": "textarea",
+      "id": "usp_2_svg",          
+      "label": "USP 2 SVG"
+    },
+    {
+      "type": "url",
+      "id": "usp_2_link",
+      "label": "USP 2 Link"
+    },
+    {
+      "type": "header",
+      "content": "USP 3"
+    },
+    {
+      "type": "text",
+      "id": "usp_3_text",        
+      "label": "USP 3 Text"
+    },
+    {
+      "type": "textarea",
+      "id": "usp_3_svg",          
+      "label": "USP 3 SVG"
+    },
+    {
+      "type": "url",
+      "id": "usp_3_link",
+      "label": "USP 3 Link"
+    },
+    {
+      "type": "header",
+      "content": "Phone Number"
+    },
+    {
+      "type": "textarea",
+      "id": "phone_svg",          
+      "label": "Phone SVG"
+    },
+    {
+      "type": "text",
+      "id": "phone_1",        
+      "label": "Phone Number 1"
+    },
+    {
+      "type": "text",
+      "id": "phone_2",        
+      "label": "Phone Number 2"
+    }
+  ],
+  "presets": [
+    {
+      "name": "USP"
+    }
+  ]
+}
+{% endschema %}

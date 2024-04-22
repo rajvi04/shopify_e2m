@@ -1,0 +1,301 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top:40px;
+    padding-bottom: 40px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+{%- liquid
+  assign highest_ratio = 0
+  for block in section.blocks
+    if block.settings.image.aspect_ratio > highest_ratio
+      assign highest_ratio = block.settings.image.aspect_ratio
+    endif
+  endfor
+-%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+    <div class="page-width">
+      <div class="title-wrapper no-border">
+        {%- if section.settings.title != blank -%}
+          <h2 class="title {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+        <div class="rte">
+          {{ section.settings.content }}
+        </div>  
+      </div>
+
+      {% if section.blocks.size > 0 %}
+      <div class="section_tabs tab__{{ section.id }}">
+        <div class="tab_buttons" role="tablist" aria-label="">
+          {%- for block in section.blocks -%}
+            {% if block.settings.tab_title != blank %}
+            <button class="tab-link" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" id="tab_{{ block.id }}">{{ block.settings.tab_title }}</button>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <div class="tab-content">
+        {%- for block in section.blocks -%}
+        <div class="tab_panel" role="tabpanel" aria-labelledby="tab_{{ block.id }}" {% if forloop.first %}{% else %}hidden{% endif %}>
+          <div class="tab-image-text_wrapper flex-wrap">
+            <div class="tab-image-text_image">
+              {%- if block.settings.image != blank -%}
+                {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+                {%- capture sizes -%}
+                  (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                  (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                {%- endcapture -%}            
+                {{
+                  block.settings.image
+                  | image_url: width: 450
+                  | image_tag: loading: 'lazy', sizes: sizes, widths: widths
+                }}
+              {% else %}
+              {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="tab-image-text_content">
+              {% if block.settings.sub_title != blank %}
+              <p class="caption">{{ block.settings.sub_title }}</p>
+              {% endif %}
+              {% if block.settings.title != blank %}
+              <h2 class="title {{ section.settings.heading_size }}">{{ block.settings.title }}</h2>
+              {% endif %}
+
+              {% if block.settings.content != blank %}
+              <div class="rte">
+                  {{ block.settings.content }}
+              </div>
+              {% endif %}
+          
+              {% if block.settings.button_label != blank %}
+              <a href="{{ block.settings.button_link }}" class="button button--primary">{{ block.settings.button_label }}</a>
+              {% endif %}
+            </div>
+          </div>          
+        </div>     
+        {% endfor %}
+      </div>
+      </div>
+      {% endif %}
+     
+    </div>
+  </div>
+</div>
+<script>
+const tab = document.querySelector('.tab__{{ section.id }}');
+const tabButtons = tab.querySelectorAll('[role="tab"]');
+const tabPanels = Array.from(tab.querySelectorAll('[role="tabpanel"]'));
+
+function tabClickHandler(e) {
+  //Hide All Tabpane
+  tabPanels.forEach(panel => {
+      panel.hidden = 'true';
+  });              	
+  //Deselect Tab Button
+  tabButtons.forEach( button => {
+      button.setAttribute('aria-selected', 'false');
+  });              	
+  //Mark New Tab
+  e.currentTarget.setAttribute('aria-selected', 'true');              	
+  //Show New Tab
+  const { id } = e.currentTarget;              	
+  const currentTab = tabPanels.find(
+      panel => panel.getAttribute('aria-labelledby') === id
+  );              	
+  currentTab.hidden = false;
+}              
+tabButtons.forEach(button => {
+  button.addEventListener('click', tabClickHandler);
+});
+</script>
+
+{% schema %}
+{
+  "name": "Tabs Image + Text",
+  "tag": "section",
+  "class": "section tabs-image-text-section",
+  "max_blocks": 6,
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Collections",
+      "label": "t:sections.collection-list.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "default": "<p>Share information about your brand with your customers.</p>",
+      "label": "t:sections.rich-text.blocks.text.settings.text.label"
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "options": [
+        {
+          "value": "third",
+          "label": "t:sections.multicolumn.settings.image_width.options__1.label"
+        },
+        {
+          "value": "half",
+          "label": "t:sections.multicolumn.settings.image_width.options__2.label"
+        },
+        {
+          "value": "full",
+          "label": "t:sections.multicolumn.settings.image_width.options__3.label"
+        }
+      ],
+      "default": "full",
+      "label": "t:sections.multicolumn.settings.image_width.label"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.collection-list.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.collection-list.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.collection-list.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "square",
+      "label": "t:sections.collection-list.settings.image_ratio.label",
+      "info": "t:sections.collection-list.settings.image_ratio.info"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "background-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab_image_text",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "default": "Tab Name",
+          "label": "Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.multicolumn.blocks.column.settings.image.label",
+          "info": "Image Size 450 X 450px"
+        },
+        {
+          "type": "text",
+          "id": "sub_title",
+          "default": "Step 1",
+          "label": "Caption"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "default": "<p>Share information about your brand with your customers.</p>",
+          "label": "t:sections.rich-text.blocks.text.settings.text.label"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Button label",
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_label_1.label",
+          "info": "t:sections.rich-text.blocks.buttons.settings.button_label_1.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_link_1.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tabs Image + Text",
+      "blocks": [
+        {
+          "type": "tab_image_text"
+        },
+        {
+          "type": "tab_image_text"
+        },
+        {
+          "type": "tab_image_text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

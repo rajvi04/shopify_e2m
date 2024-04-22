@@ -1,0 +1,69 @@
+
+{{ 'component-calculator.css' | asset_url | stylesheet_tag }}
+{{ 'fancybox.min.css' | asset_url | stylesheet_tag }}
+
+<div id="area-field-template" class="hidden">
+  <div class="area-item clearfix">
+      <div class="area-item__column">
+        <label>Length</label>
+        <input type="number" class="area-length" min="1">
+        <select class="area-unit">
+            <option value="m" selected="">M</option>
+            <option value="ft">Ft</option>
+        </select>
+      </div>
+      <div class="area-item__column">
+        <label>Width</label>
+        <input type="number" class="area-width" min="1">
+        <select class="area-unit">
+            <option value="m" selected="">M</option>
+            <option value="ft">Ft</option>
+        </select>
+      </div>
+      <div class="area-item__column">
+        <label class="area-label">Area</label>
+        <div class="area-unit__result">
+            <span class="area-unit__result-detail">0.00</span>
+            <span class="area-unit__result-sqm">M<sup>2</sup></span>
+        </div>
+      </div>
+      <span class="area-unit__remove">
+        {% render 'area-remove' %}
+      </span>
+  </div>
+</div>
+
+<div class="area-calculator">
+  <div class="area-calculator__head flex">
+    <div class="area-calculator__head--inner flex">
+      {% render 'icon-calculator' %}
+      <p class="area-calculator__head-title">Use our area calculator to work out how many tiles you need</p>
+      <span class="area-calculator__opener">
+        {% render 'icon-arrow-down' %}
+      </span>
+    </div>
+    <a href="javascript:void(0);" class="area-calculator__info" data-fancybox="" data-src="#modal-how-to-measure">
+      {% render 'icon-calculator-info' %}
+    </a>
+  </div>
+  <div class="area-calculator__main">
+    <div class="area-calculator__main--inner">      
+    </div>
+    <label id="add-area">
+      {% render 'icon-calculator-plus' %}
+      Add another area
+	</label>
+  </div>
+  <div class="area-calculator__foot">
+    <span class="area-calculator__foot-title">AREA REQUIRED</span>
+    <span class="calculation-result">
+        <span class="calculation-result__details">0.00</span>
+        <span class="calculation-result__unit">M<sup>2</sup></span>
+    </span>
+    <p class="area-calculator__foot-content">This quantity will be rounded up to the nearest tile/box in the fields below</p>
+  </div>
+</div>
+
+<script src="{{ 'jquery-3.6.0.min.js' | asset_url }}" async></script>
+<script src="{{ 'fancybox.min.js' | asset_url }}" async></script>
+<script src="{{ 'component-calculator.js' | asset_url }}" async></script>

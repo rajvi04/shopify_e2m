@@ -1,0 +1,88 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: 30px;
+    padding-bottom: 40px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+<div class="page-width section-{{ section.id }}-padding">
+  <div class="flex-wrap sitemap-listing">
+    <div class="sitemap-item">
+      <h2>Collections</h2>
+      <ul class="collection-sitemap rte list_content">
+        {% for link in linklists.sitemap-collections.links %}
+        <li><a href= "{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="sitemap-item">
+      <h2>Pages</h2>
+      <ul class="pages-sitemap rte list_content">
+        {% for link in linklists.sitemap-page.links %}
+        <li><a href= "{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% comment %}
+    <div class="sitemap-item">
+      <h2>Blogs</h2>
+      <ul class="blogs-sitemap">
+        {% for article in blogs.blog.articles %}
+        <li>
+          <a href="{{ article.url }}">{{ article.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endcomment %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sitemap",
+  "tag": "section",
+  "class": "section sitemap-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sitemap"
+    }
+  ]
+}
+{% endschema %}

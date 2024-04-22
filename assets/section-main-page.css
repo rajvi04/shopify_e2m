@@ -1,0 +1,133 @@
+.main-banner-section{
+  position:relative;
+}
+.main-banner-image{
+  position:relative;
+}
+.main-banner-image img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+.main-banner-image svg{
+  height:500px;
+  width:100%;
+  display: block;
+}
+.main-banner-section .banner__caption{
+  margin: 0 auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  padding: 0 15px;
+  width: 90%;
+  max-width: 960px;
+  color: #ffffff;
+}
+.main-banner-section .title{
+  color: #ffffff;
+  margin:0;
+}
+.main-banner-section .banner__caption p{
+  margin:5px 0 0;
+}
+.rte h2{
+  font-size:28px;
+  margin:0 0 5px;
+}
+.rte h3{
+  font-size:24px;
+  margin:0 0 5px;
+}
+.rte h4{
+  font-size:18px;
+  margin:0 0 5px;
+}
+.rte h5{
+  font-size:17px;
+  text-transform:uppercase;
+  margin:0 0 5px;
+}
+.rte h6{
+  font-size:16px;
+  margin:0;
+}
+.rte p + :is(h1, h2, h3, h4, h5, h6) {
+  margin: 40px 0 5px;
+}
+.rte h4 + h5 {
+  margin-top: 50px;
+}
+
+.main-banner-slider.carousel .flickity-button.flickity-prev-next-button.previous{
+  left:15%;
+}
+.main-banner-slider.carousel .flickity-button.flickity-prev-next-button.next {
+  right:15%;
+}
+.main-banner-slider.carousel .flickity-button{
+  background-color:var(--color-primary);
+  z-index:2;
+}
+
+@media screen and (max-width: 1199px){
+  .main-banner-image img{
+    height:250px;
+    object-fit: cover;
+  }
+  .rte h2{
+    font-size:24px;
+  }
+  .rte h3{
+    font-size:22px;
+  }
+  .rte h4{
+    font-size:17px;
+  }
+  .rte h5{
+    font-size:16px;
+  }
+  .rte h6{
+    font-size:15px;
+    margin:0;
+  }
+  .rte p + :is(h1, h2, h3, h4, h5, h6) {
+    margin: 30px 0 5px;
+  }
+  .rte h4 + h5 {
+    margin-top: 30px;
+  }
+  .main-banner-slider.carousel .flickity-button.flickity-prev-next-button.previous{
+    left:15px;
+  }
+  .main-banner-slider.carousel .flickity-button.flickity-prev-next-button.next {
+    right:15px;
+  }
+}
+@media screen and (max-width: 749px){
+  .rte h2{
+    font-size:22px;
+  }
+  .rte h3{
+    font-size:20px;
+  }
+  .rte h4{
+    font-size:16px;
+  }
+  .rte h5{
+    font-size:15px;
+  }
+  .rte h6{
+    font-size:14px;
+    margin:0;
+  }
+  .main-banner-slider.carousel .flickity-button.flickity-prev-next-button.previous{
+    left:0;
+  }
+  .main-banner-slider.carousel .flickity-button.flickity-prev-next-button.next {
+    right:0;
+  }
+}
