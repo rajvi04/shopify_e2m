@@ -8,8 +8,15 @@
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
@@ -34,9 +41,9 @@
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
-    
+
     <script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>
-    
+
     {%- if settings.animations_reveal_on_scroll -%}
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
@@ -94,7 +101,7 @@
         --color-secondary: {{ shop.brand.colors.secondary[0].background }};
         --color-secondary-bg: {{ shop.brand.colors.secondary[1].background }};
         --color-secondary-text: {{ shop.brand.colors.secondary[0].foreground }};
-        
+
         --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
         --font-body-style: {{ settings.type_body_font.style }};
         --font-body-weight: {{ settings.type_body_font.weight }};
@@ -251,8 +258,10 @@
       }
     {% endstyle %}
 
+    <h1>Do chnages in theme file</h1>
+
     {{ 'base.css' | asset_url | stylesheet_tag }}
-    {{ 'base-custom-style.css' | asset_url | stylesheet_tag }} 
+    {{ 'base-custom-style.css' | asset_url | stylesheet_tag }}
 
     {%- unless settings.type_body_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
@@ -281,9 +290,9 @@
         document.documentElement.classList.add('shopify-design-mode');
       }
     </script>
-  
-  {% render 'qikify-apps' %}
-</head>
+
+    {% render 'qikify-apps' %}
+  </head>
   {% if template contains 'product' %}
     {% assign template_name = 'template-product' %}
   {% elsif template contains '3d-design' %}
@@ -305,11 +314,11 @@
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {% unless template contains 'cart' %}
-      {{ content_for_layout }}
-      {% else %}
-      <div class="page-width cart--template flex-wrap {% if cart == empty %}is-empty{% endif %}">
         {{ content_for_layout }}
-      </div>  
+      {% else %}
+        <div class="page-width cart--template flex-wrap {% if cart == empty %}is-empty{% endif %}">
+          {{ content_for_layout }}
+        </div>
       {% endunless %}
     </main>
 
@@ -371,12 +380,11 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    
     {% if template contains 'product' %}
       {% render 'product-calculator' %}
-    {% endif %}}
-    
-    
-  {% render 'preorder-now' %}
+    {% endif -%}
+    }
+
+    {% render 'preorder-now' %}
   </body>
 </html>
