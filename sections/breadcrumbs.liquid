@@ -33,7 +33,7 @@
             <li>{{ collection.title | link_to: collection.url }}</li><span class="divider">/</span>
             {% endif %}
             <li><span aria-current="page">{{ product.title }}</span></li>
-          {% when 'collection' and collection.handle %}
+          {% when 'collection' %}
             {% if current_tags %}
               <li>{{ collection.title | link_to: collection.url }}</li>
               {% comment %}<li>{% capture tag_url %}{{ collection.url }}/{{ current_tags | join: "+"}}{% endcapture %}<a href="{{ tag_url }}" aria-current="page">{{ current_tags | join: " + "}}</a></li>{% endcomment %}
@@ -105,3 +105,13 @@
   ]
   }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% when 'collection' and collection.handle %}"
+  to: "{% when 'collection' %}"
+  position: 1328..1351
+{% endcomment %}
